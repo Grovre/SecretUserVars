@@ -9,8 +9,13 @@ var secretsConfig = new SecretsConfiguration(secretsPath)
     .AddVariable("leggo")
     .AddVariable("hugh")
     .ConfigureMissing(new ConsoleVariableValueReader())
-    .SaveSecretsFile()
+    .PushVariableInto("hello", out var hello)
+    .PushVariableInto("leggo", out var leggo)
+    .PushVariableInto("hugh", out var hugh)
     ;
 
-foreach (var kvp in secretsConfig.EnvironmentVariables)
-    Console.WriteLine(kvp);
+secretsConfig.PurgeSecretsFile();
+
+Console.WriteLine(hello);
+Console.WriteLine(leggo);
+Console.WriteLine(hugh);

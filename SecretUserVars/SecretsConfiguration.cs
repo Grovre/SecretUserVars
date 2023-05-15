@@ -75,6 +75,22 @@ public class SecretsConfiguration
         return this;
     }
 
+    public SecretsConfiguration PushVariableInto<T>(string key, out T dst, Func<string, T> parseFunc)
+    {
+        dst = parseFunc(EnvVarsInternal[key]!);
+        if (dst == null)
+            throw new NullReferenceException("The key does not have a value");
+        return this;
+    }
+
+    public SecretsConfiguration PushVariableInto(string key, out string dst)
+    {
+        dst = EnvVarsInternal[key];
+        if (dst == null)
+            throw new NullReferenceException("The key does not have a value");
+        return this;
+    }
+
     public string? this[string key]
     {
         get

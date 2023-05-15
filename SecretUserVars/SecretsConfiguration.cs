@@ -85,7 +85,7 @@ public class SecretsConfiguration
 
     public SecretsConfiguration PushVariableInto(string key, out string dst)
     {
-        dst = EnvVarsInternal[key];
+        dst = EnvVarsInternal[key]!;
         if (dst == null)
             throw new NullReferenceException("The key does not have a value");
         return this;

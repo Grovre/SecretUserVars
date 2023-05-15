@@ -12,8 +12,24 @@ No third-party library is used. Only namespaces part of .NET 7 are used.
 5. Push the secrets into variables for use within the program.
 
 Here is an example of reading existing variables from a file or, if they don't exist, reading them with the given `IVariableValueReader`.
+```csharp
+using SecretUserVars;
 
-<img width="684" alt="image" src="https://github.com/Grovre/SecretUserVars/assets/50428844/1e9cba08-080c-41d3-b0c6-4d58c18b3a2d">
+var secretsPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\test.json";
+var secretsConfig = new SecretsConfiguration(secretsPath)
+    .AddVariable(key: "hello", overwriteExistingKey: false) // world
+    .AddVariable("leggo") // my eggo
+    .AddVariable("hugh") // mungus
+    .AddVariable("special number") // some number
+    .ConfigureMissing(new ConsoleVariableValueReader())
+    .SaveSecretsFile()
+    .PushVariableInto("hello", out var hello)
+    .PushVariableInto("leggo", out var leggo)
+    .PushVariableInto("hugh", out var hugh)
+    .PushVariableInto("special number", out var specialNumber, int.Parse);
+
+Console.WriteLine(string.Join(Environment.NewLine, secretsConfig.EnvironmentVariables));
+```
 
 # How it works
 Internally, a dictionary backs all variables and is stored in JSON. Upon instantiation of the configuration class, the class will try to read existing variables from the given path.

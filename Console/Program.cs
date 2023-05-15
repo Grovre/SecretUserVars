@@ -5,17 +5,15 @@ using SecretUserVars;
 
 var secretsPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\test.json";
 var secretsConfig = new SecretsConfiguration(secretsPath)
-    .AddVariable("hello")
-    .AddVariable("leggo")
-    .AddVariable("hugh")
+    .AddVariable(key: "hello", overwriteExistingKey: false) // world
+    .AddVariable("leggo") // my eggo
+    .AddVariable("hugh") // mungus
+    .AddVariable("special number") // some number
     .ConfigureMissing(new ConsoleVariableValueReader())
+    .SaveSecretsFile()
     .PushVariableInto("hello", out var hello)
     .PushVariableInto("leggo", out var leggo)
     .PushVariableInto("hugh", out var hugh)
-    ;
+    .PushVariableInto("special number", out var specialNumber, int.Parse);
 
-secretsConfig.PurgeSecretsFile();
-
-Console.WriteLine(hello);
-Console.WriteLine(leggo);
-Console.WriteLine(hugh);
+Console.WriteLine(string.Join(Environment.NewLine, secretsConfig.EnvironmentVariables));

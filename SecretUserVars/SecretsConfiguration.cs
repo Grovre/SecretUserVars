@@ -20,7 +20,8 @@ public class SecretsConfiguration
         
         if (Directory.Exists(secretsFilePath))
         {
-            throw new ArgumentException("The given secrets path is a directory");
+            throw new ArgumentException
+                ("The given secrets path is a directory and not a file");
         }
         
         if (!File.Exists(secretsFilePath))
@@ -36,8 +37,7 @@ public class SecretsConfiguration
 
     public SecretsConfiguration AddVariable(string key, bool overwriteExistingKey = false)
     {
-        if (string.IsNullOrEmpty(key))
-            throw new ArgumentException("The key cannot be null or empty");
+        ArgumentException.ThrowIfNullOrEmpty(key);
         
         EnvVarsInternal.TryAdd(key, null);
         
@@ -77,17 +77,15 @@ public class SecretsConfiguration
 
     public SecretsConfiguration PushVariableInto<T>(string key, out T dst, Func<string, T> parseFunc)
     {
-        dst = parseFunc(EnvVarsInternal[key]!);
-        if (dst == null)
-            throw new NullReferenceException("The key does not have a value");
+        dst = parseFunc(EnvVarsInternal[key]!) 
+              ?? throw new NullReferenceException("The key does have a value");
         return this;
     }
 
     public SecretsConfiguration PushVariableInto(string key, out string dst)
     {
-        dst = EnvVarsInternal[key]!;
-        if (dst == null)
-            throw new NullReferenceException("The key does not have a value");
+        dst = EnvVarsInternal[key] 
+              ?? throw new NullReferenceException("The key does not have a value");
         return this;
     }
 

@@ -1,5 +1,9 @@
 ﻿namespace SecretUserVars;
 
+/// <summary>
+/// A vey simple implementation of the IVariableValueReader interface that
+/// asks for console input to read a value
+/// </summary>
 public class ConsoleVariableValueReader : IVariableValueReader
 {
     public string ReadVariable(string key)

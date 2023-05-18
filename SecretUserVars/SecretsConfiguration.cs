@@ -67,17 +67,18 @@ public class SecretsConfiguration
     /// </summary>
     /// <param name="key">The key/name of the variable. Cannot be empty</param>
     /// <param name="overwriteExistingKey">If true, any known values with this key are overwritten</param>
+    /// <param name="newValue">The predetermined value to add to the variable to avoid being configured later</param>
     /// <exception cref="ArgumentException">Thrown if the key is empty</exception>
     /// <returns>This</returns>
-    public SecretsConfiguration AddVariable(string key, bool overwriteExistingKey = false)
+    public SecretsConfiguration AddVariable(string key, bool overwriteExistingKey = false, string? newValue = null)
     {
         ArgumentException.ThrowIfNullOrEmpty(key);
         
-        EnvVarsInternal.TryAdd(key, null);
+        EnvVarsInternal.TryAdd(key, newValue);
         
         if (overwriteExistingKey)
         {
-            EnvVarsInternal[key] = null;
+            EnvVarsInternal[key] = newValue;
         }
         
         return this;

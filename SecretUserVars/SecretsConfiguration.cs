@@ -12,11 +12,13 @@ namespace SecretUserVars;
 public class SecretsConfiguration
 {
     internal readonly Dictionary<string, string?> EnvVarsInternal;
+    
     /// <summary>
     /// All existing variables. Null values are empty variables that will be configured.
     /// Modifications are prohibited to guarantee internal state of the dictionary.
     /// </summary>
     public IReadOnlyDictionary<string, string?> EnvironmentVariables => EnvVarsInternal;
+
     /// <summary>
     /// Returns true if no values in the dictionary are null. Otherwise, returns false.
     /// </summary>
